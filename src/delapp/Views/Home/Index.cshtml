@@ -1,0 +1,43 @@
+﻿@{ 
+    Layout = null;
+}
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/indexanim.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo"><img src="~/images/logo.png" style="height: 100%;" /></div>
+        <div class="h_title">
+            <h1>Доставка еды</h1>
+        </div>
+        <div class="cart"><img src="~/images/cart.png" style="height: 50%;" /></div>
+    </header>
+    <div class="main_image">
+        <div class="img1 animImage"> </div>
+        <div class="img2 animImage"> </div>
+        <div class="img3 animImage"> </div>
+        <div class="img4 animImage"> </div>
+        <div class="img5 animImage"> </div>
+
+        <div class="main_title">
+            <ul>
+                <li><a href="~/Home/Restaurants/Pizza" data-sid="1">Пицца</a></li>
+                <li><a href="~/Home/Restaurants/Sushi" data-sid="2">Суши роллы</a></li>
+                <li><a href="http://localhost:49585/api/home/Fastfood" data-sid="3">Фаст-Фуд</a></li>
+                <li><a href="http://localhost:49585/api/home/Hotdish" data-sid="4">Горячие блюда</a></li>
+                <li><a href="http://localhost:49585/api/home/Other" data-sid="5">Другое</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+
+    <div class="info">
+
+    </div>
+    <footer></footer>
+</body>
+</html>

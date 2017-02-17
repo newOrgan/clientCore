@@ -1,0 +1,151 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.animImage{
+    -webkit-transition: opacity 0.1s ease-out 0.1s;
+    -moz-transition: opacity 0.1s ease-out 0.1s;
+    -o-transition: opacity 0.1s ease-out 0.1s;
+    transition: opacity 0.1s ease-out 0.1s;
+}
+body{
+    background: #eee;
+}
+.main_image{
+    width: 100%;
+    height: 80%;
+    background: #974242;
+    position: relative;
+}
+.main_image > div{
+    opacity: 0;
+}
+
+.main_image > .img1{
+    opacity: 1;
+    background-image:url(../images/pizza.jpg); 
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: bottom center;
+}
+.main_image > .img2{
+    background-image:url(../images/sushi.jpg); 
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: bottom center;
+}
+.main_image > .img3{
+    background-image:url(../images/fast_food.jpg); 
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: bottom center;
+}
+.main_image > .img4{
+    background-image:url(../images/hot_dish.jpg); 
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: bottom center;
+}
+.main_image > .img5{
+    background-image:url(../images/other.jpg); 
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: bottom center;
+}
+
+
+
+.main_image > .main_title{
+    opacity: 1;
+    width: 70%;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    z-index: 99;
+    transform: translate(0%, -50%);
+}
+.main_title > ul{
+    list-style: none;
+}
+.main_title > ul > li{
+    margin-bottom: 20px;
+}
+
+.main_title > ul > li > a{
+    text-decoration: none;
+    color: white;
+    font-weight: 900;
+    font-size: 55px;
+    font-family: "NYC Sans Bold", "NYC Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+    text-shadow: -1px 2px 0px rgba(0, 0, 0, 0.5), 0 0 0.1em #797979;
+}
+.main_title > ul > li > a:hover{
+    color: #ff920c;
+}
+.info{
+    width: 100%;
+    height: 500px;
+    background: #fff;
+}
+footer{
+    width: 100%;
+    height: 200px;
+    background: #2a2730;
+}
+/*header*/
+header {
+    width: 100%;
+    height: 11%;
+    background: #1c1a1a;
+    position: fixed;
+    top: 0px;
+    z-index: 999;
+    opacity: 0.96;
+}
+header > div 
+{
+    position: absolute;
+}
+.logo
+{
+    /*background-image: url(image/logo.png);*/
+    width: 120px;
+    background-size: cover;
+    left: 15%;
+}
+.h_title
+{    
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Helvetica;
+    font-size: 1.5em;
+    color:#ff920c;
+    top: 50%;
+}
+.cart {
+    background-size: cover;
+    top: 50%;
+    right: 15%;
+    transform: translate(0%, -50%);
+}
