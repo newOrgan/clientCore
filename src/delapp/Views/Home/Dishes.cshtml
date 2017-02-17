@@ -1,16 +1,36 @@
-﻿@{
-Layout= null;
-}
-
-<html>
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-</head>
-
-
-<body>
+﻿
     <script>
-            $(document).ready(function(){
+        $(document).ready(function(){
+
+            var array = [];
+            if (localStorage['dishs'] != null)
+            {
+                console.log(JSON.parse(localStorage['dishs']));
+                $.each(JSON.parse(localStorage['dishs']), function (i, item) {
+                    array[array.length] = {
+                        name: item.name,
+                        price: item.price
+                    };
+                });
+            }
+                
+                
+                $(document).on("click", ".addDish", function () {
+                    var name = $.trim($(this).parent().children(".nameDish").html());
+                    var price = $.trim($(this).parent().children(".priceDish").html());
+
+                    array[array.length] = {
+                        name: name,
+                        price: price
+                    };
+                    console.log(localStorage.length);
+                   
+                    
+                    localStorage.setItem("dishs", JSON.stringify(array));  
+                    console.log(localStorage['dishs']);
+
+                });
+
 
                 $.ajax({
                     url: "http://localhost:49585/api/Dishes/"+'@ViewBag.Dish',
@@ -18,10 +38,17 @@ Layout= null;
                     contentType: "application/json",
                     success: function (data) {
                         
-                       console.log(data);
                        $.each(data, function(i, item){
-                           $("body").append(
-                               "<p>"+item.name+item.price+"</p>"
+                           $(".dish").append(
+                               //"<p>"+item.name+item.price+"</p>"
+                               "<div class='a'>" +
+                                   "<div class='imageDish'>" + 
+                                        "<img src='#' />" + 
+                                    "</div>" +
+                                    "<div class='nameDish'>" + item.name + "</div>" +
+                                    "<div class='priceDish'>" + item.price + "</div>" + 
+                                    "<div class='addDish'><span>+</span></div>" +
+                                "</div>"
                             );
                        });
                     },
@@ -32,7 +59,12 @@ Layout= null;
             });
     </script>
 
-</body>
-</html>
+    <div class="dish">
+
+    </div>
+    <div class="btnAdd">
+        <span class="button">Ок</span>
+    </div>
+
 
 

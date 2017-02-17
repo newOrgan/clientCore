@@ -285,6 +285,7 @@ div#conteiner {
     vertical-align: middle;
 }
 .cartWin {
+    display:none;
     width: 60%;
     background: #979797;
     padding:10px;
@@ -295,4 +296,7 @@ div#conteiner {
     top: 50%;
     transform: translate(-50%, -50%);
     /*display:none;*/
+}
+.addDish{
+    cursor:pointer;
 }
