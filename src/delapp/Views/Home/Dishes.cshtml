@@ -1,36 +1,88 @@
-﻿
-    <script>
+﻿<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="~/js/jquery.maskedinput.js"></script>
+<script>
+    //Для вывода подсказки адресов
+    var sToken = "a43f17c468f255d65228f0df983658ae97f37a51";
+
+    $(document).ready(function () {
+
+        //Событие нажатия на уменьшение количества заказа
+        $(document).on("click", "#mCount", function () {
+            var num = $(this).parent(".stepperInput").children("#numCount").val();
+            if(num > 1)
+            {
+                num = Number(num) - Number(1);
+                $(this).parent(".stepperInput").children("#numCount").val(num);
+            }
+        });
+
+        //Событие нажатия на увеличение количества заказа
+        $(document).on("click", "#addCount", function () {
+            var num = $(this).parent(".stepperInput").children("#numCount").val();
+            num = Number(num) + Number(1);
+            $(this).parent(".stepperInput").children("#numCount").val(num);
+        });
+
+        //Событие нажатия блюда
+        $(document).on("click", ".glBlock", function () {
+            if ($(this).css("background") == "#ededed")
+            {
+                $(this).css("background", "#fff");
+            }
+            else
+                $(this).css("background", "#ededed");
+        });
+
+    });
+
+    //Маска номер телефона
+    //1 пример
+    jQuery(function ($) {
+        $("#phone").mask("8(999) 999-9999");
+    });
+</script>
+
+
+
+
+
+<script>
         $(document).ready(function(){
 
             var array = [];
             if (localStorage['dishs'] != null)
             {
-                //console.log(JSON.parse(localStorage['dishs']));
                 $.each(JSON.parse(localStorage['dishs']), function (i, item) {
                     array[array.length] = {
                         id: item.id,
                         name: item.name,
-                        price: item.price
+                        price: item.price,
+                        restaurantid : item.restaurantid
                     };
                 });
             }
 
                 //Кнопка добавить заказ
             $(document).on("click", ".addDish", function () {
+                /*
                     var id = $(this).parent().children(".nameDish").data("dishid");
                     var name = $.trim($(this).parent().children(".nameDish").html());
                     var price = $.trim($(this).parent().children(".priceDish").html());
-
+                    var restaurantid = $(this).parent().children(".priceDish").data("restaurantid");
+                    */
+                var id = $(this).children(".contentBlock").children(".title").children(".nameDish").data("dishid");
+                var name = $.trim($(this).children(".contentBlock").children(".title").children(".nameDish").html());
+                var price = $.trim($(this).children(".priceDish").html());
+                var restaurantid = $(this).children(".priceDish").data("restaurantid");
                     array[array.length] = {
                         id: id,
                         name: name,
-                        price: price
+                        price: price,
+                        restaurantid : restaurantid
                     };
 
-
+                    console.log(array);
                     localStorage.setItem("dishs", JSON.stringify(array));
-                    //console.log(localStorage['dishs']);
-
                 });
 
 
@@ -39,18 +91,31 @@
                     type: "GET",
                     contentType: "application/json",
                     success: function (data) {
+                        console.log(data);
+
                         $.each(data, function (i, item) {
-                            $(".dish").append(
-                                
-                                //"<p>"+item.name+item.price+"</p>"
+                            $(".dish").append( 
+                                /*
                                 "<div class='a'>" +
                                     "<div class='imageDish'>" +
                                          "<img src='#' />" +
                                      "</div>" +
                                      "<div class='nameDish' data-dishid=" + item.id + ">" + item.name + "</div>" +
-                                     "<div class='priceDish'>" + item.price + "</div>" +
+                                     "<div class='priceDish' data-restaurantid='" + item.restaurantId + "'>" + item.price + "</div>" +
                                      "<div class='addDish'><span>+</span></div>" +
                                  "</div>"
+                                 */
+
+                                  "<div class='row glBlock a addDish'> " +
+                                    "<div class='col-lg-3 imagesBlock'>" + 
+                                        "<img src='http://mario.pizza/upload/c66e6968-7d12-48b5-840a-28e57fd81ae2/original/eae6b96d-f5a8-4bb8-8e6d-796de5c0f1ac.jpg' style='width: 100%;' />" + 
+                                    "</div>" + 
+                                    "<div class='col-lg-7 contentBlock'>" + 
+                                        "<div class='title'> <h3 class='nameDish' data-dishid=" + item.id + ">" + item.name + " </h3></div>" +
+                                        "<div class='other'> as das ds d asd sad sadasds adsa dasdsad asdasdasdasd  </div>" + 
+                                    "</div>" + 
+                                    "<div class='col-md-2 priceBlock priceDish' data-restaurantid='" + item.restaurantId + "'>" + item.price + "</div>" +
+                                "</div>" 
                              );
                         });
                     },
@@ -67,8 +132,7 @@
                 var arrayDish = [];
 
                 arrayDish = JSON.parse(localStorage['dishs']);
-                //console.log(arrayDish);
-                
+                console.log(arrayDish);
                 $.each(arrayDish, function (i, item) {
                     //Проверка    
                     $.ajax({
@@ -77,7 +141,7 @@
                         type: "GET",
                         contentType: "application/json",
                         success: function (data) {
-
+                            console.log(data);
                             var id = data[0].id;
                             var name = data[0].name;
                             var price = data[0].price;
@@ -93,12 +157,6 @@
                                 "</tr>"
                                 );
                             }
-
-                            
-                            //console.log("id : " + data.id);
-
-                            /*
-                            */
                         },
                         error: function () {
                             alert("error");
@@ -106,24 +164,156 @@
                     });
                     
                 });
-                
-                /*
-                */
-
             });
 
+                $("#btnOK").on("click", function()
+                {
+                    ////get price
+                    var arrayDish = [];
+                    var price = 0;
+                    arrayDish = JSON.parse(localStorage['dishs']);
+                    var restid = arrayDish[0].restaurantid;
+                    $.each(arrayDish, function (i, item) {
+                        price += Number(item.price);
+                    });
+
+                    var arrayPerson = [];
+                    arrayPerson[0] = $("input[name='Adress']").val();
+
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1; 
+                    var yyyy = today.getFullYear();
+
+                    if (dd < 10) {
+                        dd = '0' + dd
+                    }
+
+                    if (mm < 10) {
+                        mm = '0' + mm
+                    }
+
+                    today = yyyy + '-' + mm + '-' + dd;
+                    arrayPerson[0] = 2;
+                    arrayPerson[1] = $("input[name='Adress']").val();
+                    arrayPerson[2] = today;
+                    arrayPerson[3] = $("input[name='Phone']").val();
+                    arrayPerson[4] = price;
+                    arrayPerson[5] = $("input[name='Person']").val();
+                    arrayPerson[6] = restid;
+
+               
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost:49585/api/Order",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            id: arrayPerson[0],
+                            adress: arrayPerson[1],
+                            order_date: arrayPerson[2],
+                            phone: arrayPerson[3],
+                            price: arrayPerson[4],
+                            name: arrayPerson[5],
+                            restaurantId: arrayPerson[6]
+                        }),
+                        success : function()
+                        {
+                            alert("done");
+                        },
+                        error : function()
+                        {
+                            alert("error");
+
+                        }
+
+                    });
+                });
+            
             });
     </script>
 
-    <div class="dish">
 
+    <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Оформление заказа</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Content -->
+                <form method="post">
+                    <input id="name" name="address" type="text" class="form-control" placeholder="Введите ваше имя" style="margin: 0 auto;">
+                    <input id="phone" type="text" class="form-control" placeholder="Введите номер телефона" style="margin: 0 auto; margin-bottom:10px;">
+                    <input id="address" name="address" type="text" class="form-control" placeholder="Введите адрес доставки" style="margin: 0 auto;">
+
+                    <!-- Подсказака вывода адреса -->
+                    <link href="https://cdn.jsdelivr.net/jquery.suggestions/16.10/css/suggestions.css" type="text/css" rel="stylesheet" />
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+                    <!--[if lt IE 10]>
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.1/jquery.xdomainrequest.min.js"></script>
+                    <![endif]-->
+                    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.suggestions/16.10/js/jquery.suggestions.min.js"></script>
+                    <script type="text/javascript">
+
+                            $("#address").suggestions({
+                                token: sToken,
+                                type: "ADDRESS",
+                                count: 5,
+                                /* Вызывается, когда пользователь выбирает одну из подсказок */
+                                onSelect: function (suggestion) {
+                                    console.log(suggestion);
+                                }
+                            });
+                    </script>
+                    <!--  -->
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary openCart">Оформить</button>
+            </div>
+        </div>
     </div>
+</div>
+
+
+    <div class="col-md-8 dish" style="margin-top: 15px;">
+        
+    </div>
+
+    <div class="col-md-4 row rightBar" id="app">
+        <div class="row" style="margin-bottom: 5px;">
+            <div class="titleCart col-md-4">Пицца</div>
+            <div class="countCart col-md-3">
+                <div class="stepperInput">
+                    <button class="button button--addOnLeft" id="mCount">-</button>
+                    <input type="text" placeholder="Age" value="1" class="input stepperInput__input" id="numCount" />
+                    <button class="button button--addOnRight" id="addCount">+</button>
+                </div>
+            </div>
+            <div class="priceCart col-md-4">1000 РУБ</div>
+        </div>
+
+        <div style="margin-top:10px;">
+            <button class="btn btn-success" data-toggle="modal" data-target="#myModal" style="width:100%;">
+                Заказать
+            </button>
+        </div>
+    </div>
+
+
     <div class="btnAdd">
         <span class="button openCart">Ок</span>
     </div>
 
 
-    <div class="cartWin">
+
+
+<!--
+    <div class="cartWin22">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -138,13 +328,28 @@
             </tbody>
         </table>
     </div>
+-->
+
+    <div class="infoUser">
+        <form method="post">
+            <ul class="formInfo">
+                <li><input type="text" name="Person" /></li>
+                <li><input type="text" name="Adress"/></li>
+                <li><input type="text" name="Phone"/></li>
+                <li><span class="btn btn-success" id="btnOK">Заказать</span></li>
+            </ul>
+        </form>
+    </div>
 
 <style>
     .cartWin{
         width: 100%;
         min-height: 400px;
-        display: block;
+        /*display: block;*/
         padding: 20px;
+    }
+    .formInfo{
+        list-style:none;
     }
 </style>
 

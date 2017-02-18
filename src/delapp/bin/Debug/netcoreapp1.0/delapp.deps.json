@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.0",
-    "signature": "fe2faef44a76ac8293cd22b083e95a3b109b31dc"
+    "signature": "f9eba61e0e36089a9d4a3abbb48f197c90a0a075"
   },
   "compilationOptions": {
     "defines": [
@@ -31,7 +31,7 @@
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
-          "BootstrapMvc.Bootstrap4": "1.2.0"
+          "bootstrap": "3.3.7"
         },
         "runtime": {
           "delapp.dll": {}
@@ -40,32 +40,12 @@
           "delapp.dll": {}
         }
       },
-      "BootstrapMvc.Bootstrap4/1.2.0": {
+      "bootstrap/3.3.7": {
         "dependencies": {
-          "BootstrapMvc.Core": "2.3.0",
-          "System.Globalization": "4.0.11"
-        },
-        "runtime": {
-          "lib/netstandard1.3/BootstrapMvc.Bootstrap4.dll": {}
-        },
-        "compile": {
-          "lib/netstandard1.3/BootstrapMvc.Bootstrap4.dll": {}
+          "jQuery": "1.9.1"
         }
       },
-      "BootstrapMvc.Core/2.3.0": {
-        "dependencies": {
-          "System.IO": "4.1.0",
-          "System.Linq": "4.1.0",
-          "System.Linq.Expressions": "4.1.0",
-          "System.Runtime.Extensions": "4.1.0"
-        },
-        "runtime": {
-          "lib/netstandard1.3/BootstrapMvc.Core.dll": {}
-        },
-        "compile": {
-          "lib/netstandard1.3/BootstrapMvc.Core.dll": {}
-        }
-      },
+      "jQuery/1.9.1": {},
       "Microsoft.ApplicationInsights/2.1.0": {
         "dependencies": {
           "System.Collections": "4.0.11",
@@ -3662,15 +3642,15 @@
       "serviceable": false,
       "sha512": ""
     },
-    "BootstrapMvc.Bootstrap4/1.2.0": {
+    "bootstrap/3.3.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-YmQyJgTJm6IDNWjtG6fVG4UNdXiN2bsU4fxxELPtkmx62a/BUzo9IEJFWyvXbB/lhwCo8TDjeIIW/fgxs43xHA=="
+      "sha512": "sha512-3YTWhPNh6UcnUvzw9u6A2/hy2w0h4lznxPbX6FY47lFia3+Ib4zBixTpW6YieYA/b2fLXbkjoD59OjcVF3cJXw=="
     },
-    "BootstrapMvc.Core/2.3.0": {
+    "jQuery/1.9.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-M06mTUgj/7filu5nGdaP46Io3YrXTKLNLOHC6HsBenEDEWvLPLnyiovpH2q9SJ5b66CvPp4lfwqnO7MN3kO5sg=="
+      "sha512": "sha512-HiX9icLyiJGgiL5EOIn0d1MBPHVV2M9mzWT4mANdniDNR51RvAFTyKEXEd2+5yQJ4PJ5xePOR61Vjj/omQzYcw=="
     },
     "Microsoft.ApplicationInsights/2.1.0": {
       "type": "package",
