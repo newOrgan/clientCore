@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.0",
-    "signature": "016a3cdad92b58d2d48f35bc0739b348d702d59f"
+    "signature": "fe2faef44a76ac8293cd22b083e95a3b109b31dc"
   },
   "compilationOptions": {
     "defines": [
@@ -30,13 +30,40 @@
           "Microsoft.Extensions.Logging.Console": "1.0.0",
           "Microsoft.Extensions.Logging.Debug": "1.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-          "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0"
+          "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
+          "BootstrapMvc.Bootstrap4": "1.2.0"
         },
         "runtime": {
           "delapp.dll": {}
         },
         "compile": {
           "delapp.dll": {}
+        }
+      },
+      "BootstrapMvc.Bootstrap4/1.2.0": {
+        "dependencies": {
+          "BootstrapMvc.Core": "2.3.0",
+          "System.Globalization": "4.0.11"
+        },
+        "runtime": {
+          "lib/netstandard1.3/BootstrapMvc.Bootstrap4.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/BootstrapMvc.Bootstrap4.dll": {}
+        }
+      },
+      "BootstrapMvc.Core/2.3.0": {
+        "dependencies": {
+          "System.IO": "4.1.0",
+          "System.Linq": "4.1.0",
+          "System.Linq.Expressions": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/BootstrapMvc.Core.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/BootstrapMvc.Core.dll": {}
         }
       },
       "Microsoft.ApplicationInsights/2.1.0": {
@@ -3634,6 +3661,16 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "BootstrapMvc.Bootstrap4/1.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YmQyJgTJm6IDNWjtG6fVG4UNdXiN2bsU4fxxELPtkmx62a/BUzo9IEJFWyvXbB/lhwCo8TDjeIIW/fgxs43xHA=="
+    },
+    "BootstrapMvc.Core/2.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-M06mTUgj/7filu5nGdaP46Io3YrXTKLNLOHC6HsBenEDEWvLPLnyiovpH2q9SJ5b66CvPp4lfwqnO7MN3kO5sg=="
     },
     "Microsoft.ApplicationInsights/2.1.0": {
       "type": "package",

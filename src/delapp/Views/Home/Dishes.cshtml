@@ -5,57 +5,113 @@
             var array = [];
             if (localStorage['dishs'] != null)
             {
-                console.log(JSON.parse(localStorage['dishs']));
+                //console.log(JSON.parse(localStorage['dishs']));
                 $.each(JSON.parse(localStorage['dishs']), function (i, item) {
                     array[array.length] = {
+                        id: item.id,
                         name: item.name,
                         price: item.price
                     };
                 });
             }
-                
-                
-                $(document).on("click", ".addDish", function () {
+
+                //Кнопка добавить заказ
+            $(document).on("click", ".addDish", function () {
+                    var id = $(this).parent().children(".nameDish").data("dishid");
                     var name = $.trim($(this).parent().children(".nameDish").html());
                     var price = $.trim($(this).parent().children(".priceDish").html());
 
                     array[array.length] = {
+                        id: id,
                         name: name,
                         price: price
                     };
-                    console.log(localStorage.length);
-                   
-                    
-                    localStorage.setItem("dishs", JSON.stringify(array));  
-                    console.log(localStorage['dishs']);
+
+
+                    localStorage.setItem("dishs", JSON.stringify(array));
+                    //console.log(localStorage['dishs']);
 
                 });
 
 
                 $.ajax({
-                    url: "http://localhost:49585/api/Dishes/"+'@ViewBag.Dish',
+                    url: "http://localhost:49585/api/Dishes/" + '@ViewBag.Dish',
                     type: "GET",
                     contentType: "application/json",
                     success: function (data) {
-                        
-                       $.each(data, function(i, item){
-                           $(".dish").append(
-                               //"<p>"+item.name+item.price+"</p>"
-                               "<div class='a'>" +
-                                   "<div class='imageDish'>" + 
-                                        "<img src='#' />" + 
-                                    "</div>" +
-                                    "<div class='nameDish'>" + item.name + "</div>" +
-                                    "<div class='priceDish'>" + item.price + "</div>" + 
-                                    "<div class='addDish'><span>+</span></div>" +
-                                "</div>"
-                            );
-                       });
+                        $.each(data, function (i, item) {
+                            $(".dish").append(
+                                
+                                //"<p>"+item.name+item.price+"</p>"
+                                "<div class='a'>" +
+                                    "<div class='imageDish'>" +
+                                         "<img src='#' />" +
+                                     "</div>" +
+                                     "<div class='nameDish' data-dishid=" + item.id + ">" + item.name + "</div>" +
+                                     "<div class='priceDish'>" + item.price + "</div>" +
+                                     "<div class='addDish'><span>+</span></div>" +
+                                 "</div>"
+                             );
+                        });
                     },
-                    error: function(){
+                    error: function () {
                         alert("error");
                     }
                 });
+
+
+                //Cart
+            $(".openCart").on("click", function () {
+                $(".tbody").html("");
+                //display table
+                var arrayDish = [];
+
+                arrayDish = JSON.parse(localStorage['dishs']);
+                //console.log(arrayDish);
+                
+                $.each(arrayDish, function (i, item) {
+                    //Проверка    
+                    $.ajax({
+                        url: "http://localhost:49585/api/Order/" + item.id,
+                        async: false,
+                        type: "GET",
+                        contentType: "application/json",
+                        success: function (data) {
+
+                            var id = data[0].id;
+                            var name = data[0].name;
+                            var price = data[0].price;
+                            
+                            if(item.id == id && item.name == name && item.price == price)
+                            {
+                                $(".tbody").append(
+                                "<tr>" +
+                                    "<th scope='row'>" + (i + 1) + "</th>" +
+                                    "<td>" + item.name + "</td>" +
+                                    "<td>1</td>" +
+                                    "<td>" + item.price + "</td>" +
+                                "</tr>"
+                                );
+                            }
+
+                            
+                            //console.log("id : " + data.id);
+
+                            /*
+                            */
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                    
+                });
+                
+                /*
+                */
+
+            });
+
             });
     </script>
 
@@ -63,8 +119,34 @@
 
     </div>
     <div class="btnAdd">
-        <span class="button">Ок</span>
+        <span class="button openCart">Ок</span>
     </div>
+
+
+    <div class="cartWin">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+
+            </tbody>
+        </table>
+    </div>
+
+<style>
+    .cartWin{
+        width: 100%;
+        min-height: 400px;
+        display: block;
+        padding: 20px;
+    }
+</style>
 
 
 
