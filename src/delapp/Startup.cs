@@ -67,7 +67,8 @@ namespace delapp
                 routes
                 .MapRoute("Home", "{controller=Home}/{action=Index}/{id?}")
                 .MapRoute("Rest", "{controller=Home}/{action=Restaurants}/{id?}")
-                .MapRoute("Dishes", "{controller=Home}/{action=Dishes}/{id?}");
+                .MapRoute("Dishes", "{controller=Home}/{action=Dishes}/{id?}")
+                .MapRoute("Admin", "{controller=Admin}/{action=Index}/{id?}");
                     
             });
         }

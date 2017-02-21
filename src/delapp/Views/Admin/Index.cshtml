@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - delapp</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <!--
+        <link rel="stylesheet" href="~/lib/foundation-sites/dist/foundation.min.css" />
+        <link rel="stylesheet" href="~/lib/foundation-sites/dist/foundation-rtl.min.css" />
+        <link rel="stylesheet" href="~/lib/foundation-sites/dist/foundation-flex.min.css" />
+        <script type="text/javascript" src="~/lib/foundation-sites/dist/foundation.min.js"></script>
+            -->
+
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/aydysStyle.css" />
+
+
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+        <script type="text/javascript" src="~/js/jquery.bgpos.js"></script>
+        <script type="text/javascript" src="~/js/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="~/js/cartScript.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+
+    <div class="con">
+
+        <div class="row headCon">
+            <div class="col-md-9 col-md-push-3">
+                <h4 class="TitleAd">Админка</h4>
+            </div>
+            <div class="col-md-3 col-md-pull-9">
+                <img class="logoAd" src="http://www.connectdesign.ru/firm_style/samples/koening_logo.jpg" />
+            </div>
+        </div>
+
+        <div class="bodyCon">
+            <form method="post">
+                <input class="form-control inputAd" type="text" placeholder="Введите логин" />
+                <input class="form-control inputAd" type="password" placeholder="Введите пароль"/>
+            </form>
+        </div>
+
+    </div>
+
+    <style>
+        .con{
+            position:absolute;
+            width: 900px;
+            height: 550px;
+            left:50%;
+            top:50%;
+            transform:translate(-50%, -50%);
+            background:#808080;
+        }
+        .headCon {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .bodyCon {
+            width: 60%;
+            margin: 0 auto;
+        }
+        .inputAd {
+            width: 100%;
+            margin: 0 auto;
+            margin-top: 15px;
+        }
+
+    </style>
+
+
+
+
+</body>
+</html>
+

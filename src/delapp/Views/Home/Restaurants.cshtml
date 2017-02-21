@@ -1,15 +1,20 @@
-﻿@{ 
-    Layout = null;
-}
+﻿<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
 
-<html>
-<head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-</head>
+<script>
+    
+    jQuery(function ($) {
 
-<body>
-    <script>
-            $(document).ready(function(){
+        $(".con").masonry({
+            itemSelector:'.item',
+        });
+
+    });
+    
+</script>
+
+<script>
+    $(document).ready(function(){
 
                 $.ajax({
                     url: "http://localhost:49585/api/Restaurant/"+'@ViewBag.Rest',
@@ -18,8 +23,15 @@
                     success: function (data) {
                        console.log(data);
                        $.each(data, function(i, item){
-                           $("body").append(
-                               "<a href = '/Home/Dishes/"+item.id+"'>"+item.name+"</a>"
+                           $(".item").append(
+                               //"<a href = '/Home/Dishes/"+item.id+"'>"+item.name+"</a>"
+                               "<a href='/Home/Dishes/" + item.id + "' style='text-decoration: none;'>" +
+                                    "<img src='https://images.template.net/wp-content/uploads/2014/10/28083349/Pick-a-Pizza-Logo-of-your-Own.jpg' style='width: 100%;' />" +
+                                    "<div class='titleRestor'>" + item.name + "</div>" +
+                                    "<div class='contentRestor'>" +
+                                        //Описание кафе 
+                                    "</div>" +
+                                "</a>"
                             );
                        });
                     },
@@ -29,6 +41,51 @@
                 });
             });
     </script>
-   
-</body>
-</html>
+
+
+
+
+
+
+<div class="аilter">
+
+</div>
+
+
+<div class="con">
+    <div class="item">
+        
+    </div>
+</div>
+
+
+
+<style>
+    .item {
+        width: 32.7%;
+        padding: 10px;
+        margin: 2px;
+        background: #fff;
+        float: left;
+        box-shadow: 2px 3px 4px rgba(0,0,0,0.5);
+    }
+
+        .item:hover {
+            background: #ededed;
+        }
+
+        .item > a .titleRestor {
+            font-size: 27px;
+            color: #000;
+            text-align: center;
+        }
+
+        .item > a .contentRestor {
+            color: #000;
+        }
+
+    .contentRestor {
+        overflow: hidden;
+        max-height: 310px;
+    }
+</style>

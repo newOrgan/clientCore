@@ -48,64 +48,68 @@
 
 <script>
         $(document).ready(function(){
-
+            
             var array = [];
-            if (localStorage['dishs'] != null)
-            {
+            if (localStorage['dishs'] != null) {
                 $.each(JSON.parse(localStorage['dishs']), function (i, item) {
                     array[array.length] = {
                         id: item.id,
                         name: item.name,
                         price: item.price,
-                        restaurantid : item.restaurantid
+                        restaurantid: item.restaurantid,
+                        count: item.count
                     };
+                    writeDishes(item.id, item.name, item.restaurantid, item.price, item.count);
                 });
             }
 
-                //Кнопка добавить заказ
+            //Кнопка добавить заказ  
             $(document).on("click", ".addDish", function () {
-                /*
-                    var id = $(this).parent().children(".nameDish").data("dishid");
-                    var name = $.trim($(this).parent().children(".nameDish").html());
-                    var price = $.trim($(this).parent().children(".priceDish").html());
-                    var restaurantid = $(this).parent().children(".priceDish").data("restaurantid");
-                    */
+                
                 var id = $(this).children(".contentBlock").children(".title").children(".nameDish").data("dishid");
                 var name = $.trim($(this).children(".contentBlock").children(".title").children(".nameDish").html());
                 var price = $.trim($(this).children(".priceDish").html());
                 var restaurantid = $(this).children(".priceDish").data("restaurantid");
+
+                var count = $('[data-id ^="' + id + '"]').parent(".row").children(".countCart").children(".stepperInput").children("#numCount").val();
+               
+                if (count == null)
+                {
                     array[array.length] = {
                         id: id,
                         name: name,
                         price: price,
-                        restaurantid : restaurantid
+                        restaurantid: restaurantid,
+                        count: 1
                     };
+                   writeDishes(id, name, restaurantid, price, 1);
+                }
+                else
+                {
+                    $('[data-id ^="' + id + '"]').parent(".row").children(".countCart").children(".stepperInput").children("#numCount").val(parseInt(count) + 1);
+                    count = $('[data-id ^="' + id + '"]').parent(".row").children(".countCart").children(".stepperInput").children("#numCount").val();
 
-                    console.log(array);
+                    $.each(array, function (i, item) {
+                        if (item.id == id) {
+                            item.count = Number(item.count + 1);
+                        }
+                    });
+                }
+                
+                    //Вывод dishes rightBar
                     localStorage.setItem("dishs", JSON.stringify(array));
+                
                 });
-
+            /////////////////////////////////////////////////////////////////////////////
 
                 $.ajax({
                     url: "http://localhost:49585/api/Dishes/" + '@ViewBag.Dish',
                     type: "GET",
                     contentType: "application/json",
                     success: function (data) {
-                        console.log(data);
 
                         $.each(data, function (i, item) {
-                            $(".dish").append( 
-                                /*
-                                "<div class='a'>" +
-                                    "<div class='imageDish'>" +
-                                         "<img src='#' />" +
-                                     "</div>" +
-                                     "<div class='nameDish' data-dishid=" + item.id + ">" + item.name + "</div>" +
-                                     "<div class='priceDish' data-restaurantid='" + item.restaurantId + "'>" + item.price + "</div>" +
-                                     "<div class='addDish'><span>+</span></div>" +
-                                 "</div>"
-                                 */
-
+                            $(".dish").prepend( 
                                   "<div class='row glBlock a addDish'> " +
                                     "<div class='col-lg-3 imagesBlock'>" + 
                                         "<img src='http://mario.pizza/upload/c66e6968-7d12-48b5-840a-28e57fd81ae2/original/eae6b96d-f5a8-4bb8-8e6d-796de5c0f1ac.jpg' style='width: 100%;' />" + 
@@ -123,16 +127,49 @@
                         alert("error");
                     }
                 });
+            //Вывод блюд в корзину
+            function writeDishes(id, name, restaurantId, price, count) {
+                $(".dishesRightBar").prepend(
+                    "<div class='row' style='margin-bottom: 5px;'>" +
+                        "<div class='titleCart col-md-4' data-id=" + id + " data-restaurantid='" + restaurantId + "'>" + name + "</div>" +
+                        "<div class='countCart col-md-3'>" +
+                            "<div class='stepperInput'>" +
+                                "<button class='button button--addOnLeft' id='mCount'>-</button>" +
+                                "<input type='text' placeholder='Age' value="+count+" class='input stepperInput__input' id='numCount' />" +
+                                "<button class='button button--addOnRight' id='addCount'>+</button>" +
+                            "</div>" +
+                        "</div>" +
+                        "<div class='priceCart col-md-4'>" + price + "</div>" +
+                    "</div>"
+                    );
+            }
 
+            $("#btnZakazat").on("click", function () {
+                var a = proverkaPrice();
+                var array = [];
+                $.each(JSON.parse(localStorage['dishs']), function (i, item) {
+                    array[array.length] = {
+                        id: item.id,
+                        name: item.name,
+                        price: item.price,
+                        restaurantid: item.restaurantid,
+                        count: Number( $('[data-id ^="' + item.id + '"]').parent(".row").children(".countCart").children(".stepperInput").children("#numCount").val() )
+                    };
+                });
+                console.log(array);
+                //Обновить состояниа localStorage
+                localStorage.setItem("dishs", JSON.stringify(array));
 
-                //Cart
-            $(".openCart").on("click", function () {
-                $(".tbody").html("");
-                //display table
+                //Итого
+                $(".mprice").html(a);
+            });
+
+            function proverkaPrice()
+            {
                 var arrayDish = [];
-
                 arrayDish = JSON.parse(localStorage['dishs']);
-                console.log(arrayDish);
+
+                var sumPrice = 0;
                 $.each(arrayDish, function (i, item) {
                     //Проверка    
                     $.ajax({
@@ -141,45 +178,54 @@
                         type: "GET",
                         contentType: "application/json",
                         success: function (data) {
-                            console.log(data);
-                            var id = data[0].id;
-                            var name = data[0].name;
-                            var price = data[0].price;
-                            
-                            if(item.id == id && item.name == name && item.price == price)
-                            {
-                                $(".tbody").append(
-                                "<tr>" +
-                                    "<th scope='row'>" + (i + 1) + "</th>" +
-                                    "<td>" + item.name + "</td>" +
-                                    "<td>1</td>" +
-                                    "<td>" + item.price + "</td>" +
-                                "</tr>"
-                                );
-                            }
+                            sumPrice += data[0].price;
                         },
                         error: function () {
                             alert("error");
                         }
                     });
-                    
                 });
-            });
+                return sumPrice;
+            }
+            //Получение массива блюд???????
+            function getDishes()
+            {
+                var arrayDish = [];
+                arrayDish = JSON.parse(localStorage['dishs']);
 
-                $("#btnOK").on("click", function()
-                {
+                var arr = new Array();
+                $.each(arrayDish, function (i, item) {
+                    //Проверка    
+                    $.ajax({
+                        url: "http://localhost:49585/api/Order/" + item.id,
+                        async: false,
+                        type: "GET",
+                        contentType: "application/json",
+                        success: function (data) {
+                            arr[i,0] = data[0].id;
+                            arr[i,1] = data[0].name;
+                            arr[i,2] = data[0].price;
+                            arr[i,3] = data[0].restaurantId;
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                });
+                return arr;
+            }
+
+
+            $("#btnOk").on("click", function ()
+            {
+                   
                     ////get price
                     var arrayDish = [];
-                    var price = 0;
+                    var price = proverkaPrice();
                     arrayDish = JSON.parse(localStorage['dishs']);
                     var restid = arrayDish[0].restaurantid;
-                    $.each(arrayDish, function (i, item) {
-                        price += Number(item.price);
-                    });
 
                     var arrayPerson = [];
-                    arrayPerson[0] = $("input[name='Adress']").val();
-
                     var today = new Date();
                     var dd = today.getDate();
                     var mm = today.getMonth() + 1; 
@@ -192,41 +238,62 @@
                     if (mm < 10) {
                         mm = '0' + mm
                     }
-
+                    var stringId = Math.random().toString(36);
+                   
                     today = yyyy + '-' + mm + '-' + dd;
-                    arrayPerson[0] = 2;
-                    arrayPerson[1] = $("input[name='Adress']").val();
-                    arrayPerson[2] = today;
-                    arrayPerson[3] = $("input[name='Phone']").val();
-                    arrayPerson[4] = price;
-                    arrayPerson[5] = $("input[name='Person']").val();
-                    arrayPerson[6] = restid;
-
-               
+                    console.log(arrayDish);
+                /////////////ORDER DOBAVLENIE
                     $.ajax({
                         type: "POST",
                         url: "http://localhost:49585/api/Order",
                         contentType: "application/json",
                         data: JSON.stringify({
-                            id: arrayPerson[0],
-                            adress: arrayPerson[1],
-                            order_date: arrayPerson[2],
-                            phone: arrayPerson[3],
-                            price: arrayPerson[4],
-                            name: arrayPerson[5],
-                            restaurantId: arrayPerson[6]
+                            adress: $("#address").val(),
+                            order_date: today,
+                            phone: $("#phone").val(),
+                            price: price,
+                            name:  $("#person").val(),
+                            restaurantId: restid,
+                            StringId : stringId
                         }),
                         success : function()
                         {
-                            alert("done");
+                            alert("doneORDER");
                         },
                         error : function()
                         {
-                            alert("error");
+                            alert("errorORDER");
 
                         }
 
                     });
+                ///////////////////////////CART DOBAVLENIE
+                    $.each(arrayDish, function (i, item) {
+                        var count = item.count;
+                        //if(item)
+                        $.ajax({
+                            type: "POST",
+                            url: "http://localhost:49585/api/Cart",
+                            contentType: "application/json",
+                            data: JSON.stringify({
+                                DishId: item.id,
+                                OrderId: stringId,
+                                Quantity : count
+
+                                
+                            }),
+                            success: function () {
+                                alert("doneCART");
+                            },
+                            error: function () {
+                                alert("errorCART");
+
+                            }
+                        
+                        });
+                    });
+                  /*  
+                    */
                 });
             
             });
@@ -244,9 +311,9 @@
             <div class="modal-body">
                 <!-- Content -->
                 <form method="post">
-                    <input id="name" name="address" type="text" class="form-control" placeholder="Введите ваше имя" style="margin: 0 auto;">
-                    <input id="phone" type="text" class="form-control" placeholder="Введите номер телефона" style="margin: 0 auto; margin-bottom:10px;">
-                    <input id="address" name="address" type="text" class="form-control" placeholder="Введите адрес доставки" style="margin: 0 auto;">
+                    <input id="person" name="Person" type="text" class="form-control" placeholder="Введите ваше имя" style="margin: 0 auto;">
+                    <input id="phone" name="Phone" type="text" class="form-control" placeholder="Введите номер телефона" style="margin: 0 auto; margin-bottom:10px;">
+                    <input id="address" name="Address" type="text" class="form-control" placeholder="Введите адрес доставки" style="margin: 0 auto;" value="">
 
                     <!-- Подсказака вывода адреса -->
                     <link href="https://cdn.jsdelivr.net/jquery.suggestions/16.10/css/suggestions.css" type="text/css" rel="stylesheet" />
@@ -270,10 +337,15 @@
                     <!--  -->
 
                 </form>
+
+                <div class="sumPrice">
+                    <span>Итого</span>
+                    <span class="mprice"></span>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary openCart">Оформить</button>
+                <button type="button" class="btn btn-primary openCart" id="btnOk">Оформить</button>
             </div>
         </div>
     </div>
@@ -285,61 +357,20 @@
     </div>
 
     <div class="col-md-4 row rightBar" id="app">
-        <div class="row" style="margin-bottom: 5px;">
-            <div class="titleCart col-md-4">Пицца</div>
-            <div class="countCart col-md-3">
-                <div class="stepperInput">
-                    <button class="button button--addOnLeft" id="mCount">-</button>
-                    <input type="text" placeholder="Age" value="1" class="input stepperInput__input" id="numCount" />
-                    <button class="button button--addOnRight" id="addCount">+</button>
-                </div>
-            </div>
-            <div class="priceCart col-md-4">1000 РУБ</div>
+        <div class="dishesRightBar">
+
         </div>
 
         <div style="margin-top:10px;">
-            <button class="btn btn-success" data-toggle="modal" data-target="#myModal" style="width:100%;">
+            <button id="btnZakazat" class="btn btn-success" data-toggle="modal" data-target="#myModal" style="width:100%;">
                 Заказать
             </button>
         </div>
     </div>
 
 
-    <div class="btnAdd">
-        <span class="button openCart">Ок</span>
-    </div>
 
-
-
-
-<!--
-    <div class="cartWin22">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                </tr>
-            </thead>
-            <tbody class="tbody">
-
-            </tbody>
-        </table>
-    </div>
--->
-
-    <div class="infoUser">
-        <form method="post">
-            <ul class="formInfo">
-                <li><input type="text" name="Person" /></li>
-                <li><input type="text" name="Adress"/></li>
-                <li><input type="text" name="Phone"/></li>
-                <li><span class="btn btn-success" id="btnOK">Заказать</span></li>
-            </ul>
-        </form>
-    </div>
+    
 
 <style>
     .cartWin{

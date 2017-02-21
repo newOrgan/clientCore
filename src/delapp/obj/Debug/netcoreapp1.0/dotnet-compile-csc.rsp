@@ -216,4 +216,5 @@
 -resource:"D:\uchuldum\core-master\src\delapp\obj\Debug\netcoreapp1.0\delappdotnet-compile.deps.json",delapp.deps.json
 "D:\uchuldum\core-master\src\delapp\Program.cs"
 "D:\uchuldum\core-master\src\delapp\Startup.cs"
+"D:\uchuldum\core-master\src\delapp\Controllers\AdminController.cs"
 "D:\uchuldum\core-master\src\delapp\Controllers\HomeController.cs"
